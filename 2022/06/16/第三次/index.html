@@ -1,0 +1,234 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>CodeRush | CodeRush</title><meta name="keywords" content="blog"><meta name="author" content="ZarroBoogs"><meta name="copyright" content="ZarroBoogs"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="归一化有几种方法，当然直接挪用api肯定就啥问题没有，但是实验室招募的指令里，没说可以用api，我当时是手动谷歌理解了几种归一化的方法，当时还遇到一个问题就是如果手动归一化了以后，进行对数变化或者伽马变化，不使用比较某个比较复杂的还原公式还原回去到 0 -255 整个对比度拉伸效果就很差，特别是最简单地直接乘以255，不是很懂这其中的原理 以下是当时收集的比较适合我个人水平的博客资料 来自西南林业">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CodeRush">
+<meta property="og:url" content="http://example.com/2022/06/16/%E7%AC%AC%E4%B8%89%E6%AC%A1/index.html">
+<meta property="og:site_name" content="CodeRush">
+<meta property="og:description" content="归一化有几种方法，当然直接挪用api肯定就啥问题没有，但是实验室招募的指令里，没说可以用api，我当时是手动谷歌理解了几种归一化的方法，当时还遇到一个问题就是如果手动归一化了以后，进行对数变化或者伽马变化，不使用比较某个比较复杂的还原公式还原回去到 0 -255 整个对比度拉伸效果就很差，特别是最简单地直接乘以255，不是很懂这其中的原理 以下是当时收集的比较适合我个人水平的博客资料 来自西南林业">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7">
+<meta property="article:published_time" content="2022-06-16T08:30:55.122Z">
+<meta property="article:modified_time" content="2022-06-16T06:58:40.812Z">
+<meta property="article:author" content="ZarroBoogs">
+<meta property="article:tag" content="blog">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://example.com/2022/06/16/%E7%AC%AC%E4%B8%89%E6%AC%A1/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery@2/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery@2/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'CodeRush',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2022-06-16 14:58:40'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 6.2.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">5</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">0</div></a></div><hr/></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">CodeRush</a></span><div id="menus"><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">无题</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2022-06-16T08:30:55.122Z" title="发表于 2022-06-16 16:30:55">2022-06-16</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2022-06-16T06:58:40.812Z" title="更新于 2022-06-16 14:58:40">2022-06-16</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><p>归一化有几种方法，当然直接挪用api肯定就啥问题没有，但是实验室招募的指令里，没说可以用api，我当时是手动谷歌理解了几种归一化的方法，当时还遇到一个问题就是如果手动归一化了以后，进行对数变化或者伽马变化，不使用比较某个比较复杂的还原公式还原回去到 0 -255 整个对比度拉伸效果就很差，特别是最简单地直接乘以255，不是很懂这其中的原理</p>
+<p>以下是当时收集的比较适合我个人水平的博客资料</p>
+<h3 id="来自西南林业大学的老师的胎教级教程，对名词都毫无概念的话，建议先看一看"><a href="#来自西南林业大学的老师的胎教级教程，对名词都毫无概念的话，建议先看一看" class="headerlink" title="来自西南林业大学的老师的胎教级教程，对名词都毫无概念的话，建议先看一看"></a>来自西南林业大学的老师的胎教级教程，对名词都毫无概念的话，建议先看一看</h3><iframe src="http://player.bilibili.com/player.html?aid=584817036&bvid=BV1gz4y1f7D2&cid=241384711&page=10" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" style="width: 640px; height: 430px; max-width: 100%"></iframe>
+
+<h3 id="图像归一化处理"><a href="#图像归一化处理" class="headerlink" title="图像归一化处理"></a>图像归一化处理</h3><p><strong>1.什么是归一化？</strong><br>归一化， <a target="_blank" rel="noopener" href="https://so.csdn.net/so/search?q=Normalization&spm=1001.2101.3001.7020">Normalization (正常化)</a> ,是指将在一定范围内的数值集合转换为0～1范围内。归一化的目的是控制输入向量的数值范围，不能过大或者过小。因为复杂程序运行本身已经非常耗时，如果数值过大，运行速度会更慢。<br><strong>2.归一化的方法</strong><br>归一化经常经常采用的是最大最小值法：<br><img src="https://img-blog.csdnimg.cn/262f7e25595148f4b0a23d9f9bddb7ac.png" alt="x&#39;为归一化之后的数值，x为需要归一化处理的数值"><br><em>x’为归一化之后的数值，x为需要归一化处理的数值</em></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">下面举例说明：</span><br><span class="line">一个4维向量[12,21,54,32]需要进行归一化处理，xmax=54,xmin=12</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://img-blog.csdnimg.cn/9cdddf72a3994c83bd9260b041e3df5e.png?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBAUk9BRExFU1NfVFJBSU4=,size_11,color_FFFFFF,t_70,g_se,x_16" alt="归一化处理后，样本全部落在0到1范围内"><br><em>归一化处理后，样本全部落在0到1范围内</em></p>
+<p><strong>3.图像归一化处理</strong><br>输入图像每个像素值范围是0到255之间的数值，对于计算机来说这个数值太大了，所以像素值归一化处理一般是将像素值除以255，得到0到1之间的数值来进行计算。</p>
+<h3 id="直方图均衡化"><a href="#直方图均衡化" class="headerlink" title="直方图均衡化"></a>直方图均衡化</h3><p>这个环节对于累次频率这个概念还没学概率论，理解不深，所以配合这篇知乎文章食用，在小白看来挺好懂的</p>
+<h4 id="均衡化的数学原理和理解"><a href="#均衡化的数学原理和理解" class="headerlink" title="均衡化的数学原理和理解"></a>均衡化的数学原理和理解</h4><h6 id="summary"><a href="#summary" class="headerlink" title="summary:"></a>summary:</h6><p>在正文开始之前，我们首先看一下直方图均衡化处理前后的效果</p>
+<p><img src="https://pic1.zhimg.com/v2-ba39452ff85cd92212c1799ad124bdfc_b.jpg"></p>
+<p><img src="https://pic1.zhimg.com/v2-614e5699ebbd96f474f0934b8c5141e4_b.jpg"></p>
+<p>直方图均衡化的目的在于增强图片的对比度，让原来难以分辨的纹理变得易于区分。</p>
+<h5 id="一、直方图"><a href="#一、直方图" class="headerlink" title="一、直方图"></a>一、直方图</h5><p>最早我们接触直方图这个概念还是在初中。作为一个统计学的概念，我们可以轻易地用直方图来看出数据的分布情况。</p>
+<p>比如下面的直方图是某班某次考试成绩的分布情况</p>
+<p><img src="https://pic4.zhimg.com/v2-a5681b8ec4aa7215e526aaa7e0bb8adb_r.jpg"></p>
+<p>其中，每个矩形的高度代表该区间上的<strong>数据的数量</strong>。可以轻易看出，得分在 [70,80) 分的同学人数最多，达到了 25 人。</p>
+<p>如果用一个向量来表示这个直方图，就可以写成 [0,0,1,2,4,15,25,10,3]，这个向量的第 i 个分量就表示第 i 个区间上的数据量。</p>
+<p>除了统计区间的分布情况，我们还可以统计具体每个分数上有多少同学，然后列成一个直方图。那么如果用一个向量来表示这个直方图，向量的长度就是 101（从 0 分到 100 分，共 101 个分数）。向量的第 i 个分量就表示得 i-1 分的同学的数量。</p>
+<h5 id="二、频率与累积频率"><a href="#二、频率与累积频率" class="headerlink" title="二、频率与累积频率"></a>二、频率与累积频率</h5><p>频率指的是某区间（或某个值）上<strong>数据量与总数据量之比</strong>。以上面的成绩分布为例，班级总人数是 60 人，那么 [70,80) 这个区间的分数出现的频率就是 25&#x2F;60&#x3D;41.67%。</p>
+<p>而累计频率则指的是在这个区间之前的<strong>所有区间（包括这个区间）频率之和</strong>，累积的意思，就是把这个区间和之前的所有区间的频率都累积起来。</p>
+<p>比如还是刚才 [70,80) 这个区间，其累计频率就是（0+0+1+2+4+15+25）&#x2F;60&#x3D;78.3%。</p>
+<p>我们可以发现一些有意思的性质：对于频率分布而言，区间的频率分布完全是由数据的分布决定的；而对于累积频率而言，后面区间的频率 &#x3D; 自己的频率 + 前面所有区间的频率之和 &#x3D; 自己的频率 + 前面区间的累积频率，因此累积频率分布完全是一个递增的函数。</p>
+<h5 id="三、图像的直方图均衡化"><a href="#三、图像的直方图均衡化" class="headerlink" title="三、图像的直方图均衡化"></a>三、图像的直方图均衡化</h5><p>对于图像的像素、灰度等概念还不了解的同学，可以看一下之前的一篇文章</p>
+<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/471507066">李查德：【科普向】图像的数据结构</a></p>
+<p>图像的直方图，就是统计一下图像中，对于每个灰度而言，有多少个像素等于该灰度。一般图像的灰度层级用（0-255）来表示。因此如果用向量来表示直方图，需要向量的长度为 256。</p>
+<p><img src="https://pic1.zhimg.com/v2-6942581a8f5677f8a499ccbdc1c20ca8_b.jpg"></p>
+<p>我们对这张图像取直方图，得到如下图所示的直方图</p>
+<p><img src="https://pic3.zhimg.com/v2-b6737a0e0d0bb835933015bbf6f20736_b.jpg"></p>
+<p>我们可以看到，由于该图像整体偏暗，也就是灰度比较低，因此像素都分布在灰度比较低的范围内。</p>
+<p>当图像像素的灰度都集中在一个很小的范围内时，我们的肉眼就很难分辨。比如下面两种灰度</p>
+<p><img src="https://pic2.zhimg.com/v2-9c33cf62e4b983138b040848417a9589_b.jpg"></p>
+<p><img src="https://pic1.zhimg.com/v2-0d898120f3975b316dbaf86e0c458bb8_b.jpg"></p>
+<p>即使这两种灰度在计算机内存储的数值不同、表示的亮度也不同，我们人眼却很难去分辨。</p>
+<p>那么我们能不能把集中的像素<strong>拉开</strong>，<strong>扩大灰度之间的差异</strong>呢？</p>
+<p>答案是可以，我们这里采用一种叫做直方图均衡化的方法进行 “拉开” 操作</p>
+<p>我们首先对于每个灰度取累积频率 PDF，然后用这个累积频率 PDF 去和最大的灰度 255 进行相乘，然后向下取整即可。</p>
+<p><img src="https://pic1.zhimg.com/v2-253a3a2688424a13a56b71967ad6fab8_r.jpg"></p>
+<p>用数学一点的语言去解释，这里要将旧的灰度映射为新的灰度，而映射出来新的灰度值由原来的灰度的累积频率决定。</p>
+<p>如果你没有看懂刚才的式子，不要紧，请接着往下走，然后在翻过头来理解这个式子。</p>
+<p>打个比方，这个操作有点像现在新高考的<strong>赋分制</strong>。如果大家的分数都很集中很接近怎么办，没有选拔分流的作用，那么我们就进行赋分操作。在考试评分完成后大家都有一个原始分，看你的原始分<strong>能够超过多少人</strong>，如果你的原始分超过了 75% 的同学，那么就给你赋 75 分，如果你的原始分超过了 100% 的同学，那么就给你赋 100 分。当然真正的高考赋分比这更加复杂，我们就用这个例子来理想化的打个比方。</p>
+<p>我们的直方图均衡化和这个赋分操作非常类似，不过满分是 255 分。对于每一个像素而言，如果你原来的灰度超过了 100% 的像素，那么就给你赋满分 255 分，如果你超过了 50% 的像素，那么就给你赋 [0.5x255]&#x3D;127 分。我们之前计算的<strong>累积频率，就是在计算超过了百分之多少的像素</strong>。</p>
+<p>通过这样的操作，我们就能将集中在某个区间上的像素均匀拉开到 0-255 这个区间之上。灰度相差大了之后，纹理细节也会更加清晰。</p>
+<p><img src="https://pic1.zhimg.com/v2-614e5699ebbd96f474f0934b8c5141e4_b.jpg"></p>
+<p><img src="https://pic4.zhimg.com/v2-9709f568c803b6bfa35fb16809aa8c9f_b.jpg"></p>
+<h5 id="四、多通道图像的直方图均衡化"><a href="#四、多通道图像的直方图均衡化" class="headerlink" title="四、多通道图像的直方图均衡化"></a>四、多通道图像的直方图均衡化</h5><p>当图像有多个通道时，如果图像的某个通道整体灰度值偏高，那么有可能会影响其他通道的信息。因此我们可以在每个通道上分别做直方图均衡化，让每个通道的信息更加明了。</p>
+<p>效仿数学教材的编写者，多通道图像（RGB）图像的直方图均衡化可以留给读者作为课后作业自己动手做实验观察效果。</p>
+<h6 id="附录-python-opencv-的直方图均衡化代码"><a href="#附录-python-opencv-的直方图均衡化代码" class="headerlink" title="附录 python-opencv 的直方图均衡化代码"></a>附录 python-opencv 的直方图均衡化代码</h6><p>事先需要安装 opencv 拓展包</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install python-opencv</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">import cv2</span><br><span class="line"># img为单通道图像（灰度图）</span><br><span class="line">img = cv2.imread(&#x27;image_name.jpg&#x27;)</span><br><span class="line">img_new = cv2.equalizeHist(img)</span><br><span class="line">cv2.imshow(img_new)</span><br></pre></td></tr></table></figure>
+
+<h4 id="手动实现均衡化"><a href="#手动实现均衡化" class="headerlink" title="手动实现均衡化"></a>手动实现均衡化</h4><p>   <a target="_blank" rel="noopener" href="https://so.csdn.net/so/search?q=%E7%9B%B4%E6%96%B9%E5%9B%BE&spm=1001.2101.3001.7020">直方图</a>均衡化是图像处理领域中利用图像直方图对对比度进行调整的方法，其主要思想是将一副图像的直方图分布变成近似均匀分布，从而增强图像的对比度。这种方法通常用来增加许多图像的全局对比度，尤其是当图像的有用数据的对比度相当接近的时候。通过这种方法，亮度可以更好地在直方图上分布，这样就可以用于增强局部的对比度而不影响整体的对比度。<br>   这种方法对于背景和前景都太亮或者太暗的图像非常有用，这种方法尤其是可以带来 X 光图像中更好的骨骼结构显示以及曝光过度或者曝光不足照片中更好的细节。<br>   这种方法的一个主要优势是它是一个相当直观的技术并且是可逆操作，如果已知均衡化函数，那么就可以恢复原始的直方图，并且计算量也不大。这种方法的一个缺点是它对处理的数据不加选择，它可能会增加背景噪声的对比度并且降低有用信号的对比度。<br>   直方图均衡化和规定化都是通过全局直方图调节来改变图像的对比度，其实就是根据一个表来做映射。均衡化一句话，就是拿图像本身的累积分布表 (cdf) 来做映射。规定化就是图像 B 拿图像 A 的累积分布表 (cdf) 来做映射。</p>
+<p><strong>直方图均衡化效果</strong>：</p>
+<p><img src="https://img-blog.csdnimg.cn/20190723203736151.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MTA1OTI2OQ==,size_16,color_FFFFFF,t_70"></p>
+<p><strong>直方图可视化</strong>：</p>
+<p><img src="https://img-blog.csdnimg.cn/20190723202734793.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MTA1OTI2OQ==,size_16,color_FFFFFF,t_70"></p>
+<p><em><strong>Python 代码：</strong></em></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#coding:utf-8</span></span><br><span class="line"><span class="comment">#*********************************************************************************************************</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">说明：利用python/numpy/opencv实现直方图均衡化，其主要思想是将一副图像的直方图分布变成近似均匀分布，从而增强图像的对比度</span></span><br><span class="line"><span class="string">算法思路:</span></span><br><span class="line"><span class="string">        1)以灰度图的方式加载图片;</span></span><br><span class="line"><span class="string">        2)求出原图的灰度直方图，计算每个灰度的像素个数在整个图像中所占的百分比;</span></span><br><span class="line"><span class="string">		3)计算图像各灰度级的累积概率密度分布；</span></span><br><span class="line"><span class="string">		4)求出新图像的灰度值。</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> cv2</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">Origin_histogram</span>(<span class="params"> img </span>):</span><br><span class="line">    <span class="comment">#建立原始图像各灰度级的灰度值与像素个数对应表</span></span><br><span class="line">    histogram = &#123;&#125;</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>( img.shape[<span class="number">0</span>] ):</span><br><span class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>( img.shape[<span class="number">1</span>] ):</span><br><span class="line">            k = img[i][j]</span><br><span class="line">            <span class="keyword">if</span> k <span class="keyword">in</span> histogram:</span><br><span class="line">                histogram[k] += <span class="number">1</span></span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                histogram[k] = <span class="number">1</span></span><br><span class="line">                </span><br><span class="line">    sorted_histogram = &#123;&#125;<span class="comment">#建立排好序的映射表</span></span><br><span class="line">    sorted_list = <span class="built_in">sorted</span>( histogram )<span class="comment">#根据灰度值进行从低至高的排序</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>( <span class="built_in">len</span>( sorted_list ) ):</span><br><span class="line">        sorted_histogram[ sorted_list[j] ] = histogram[ sorted_list[j] ]</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> sorted_histogram</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">equalization_histogram</span>(<span class="params"> histogram, img </span>):</span><br><span class="line">    </span><br><span class="line">    pr = &#123;&#125;<span class="comment">#建立概率分布映射表</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> histogram.keys():</span><br><span class="line">        pr[i] = histogram[i] / ( img.shape[<span class="number">0</span>] * img.shape[<span class="number">1</span>] ) </span><br><span class="line"></span><br><span class="line">    tmp = <span class="number">0</span></span><br><span class="line">    <span class="keyword">for</span> m <span class="keyword">in</span> pr.keys():</span><br><span class="line">        tmp += pr[m]</span><br><span class="line">        pr[m] =  <span class="built_in">max</span>( histogram ) * tmp</span><br><span class="line">    </span><br><span class="line">    new_img = np.zeros( shape = ( img.shape[<span class="number">0</span>], img.shape[<span class="number">1</span>] ), dtype = np.uint8 )</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span> k <span class="keyword">in</span> <span class="built_in">range</span>( img.shape[<span class="number">0</span>] ):</span><br><span class="line">        <span class="keyword">for</span> l <span class="keyword">in</span> <span class="built_in">range</span>( img.shape[<span class="number">1</span>] ):</span><br><span class="line">            new_img[k][l] = pr[img[k][l]]</span><br><span class="line">            </span><br><span class="line">    <span class="keyword">return</span> new_img</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">GrayHist</span>(<span class="params"> img </span>):</span><br><span class="line">    <span class="comment"># 计算灰度直方图</span></span><br><span class="line">    height, width = img.shape[:<span class="number">2</span>]</span><br><span class="line">    grayHist = np.zeros([<span class="number">256</span>], np.uint64)</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(height):</span><br><span class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(width):</span><br><span class="line">            grayHist[img[i][j]] += <span class="number">1</span></span><br><span class="line">    <span class="keyword">return</span> grayHist</span><br><span class="line">    </span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    <span class="comment">#读取原始图像</span></span><br><span class="line">    img = cv2.imread( <span class="string">&#x27;lowlight.png&#x27;</span>, cv2.IMREAD_GRAYSCALE )</span><br><span class="line">    <span class="comment">#计算原图灰度直方图</span></span><br><span class="line">    origin_histogram = Origin_histogram( img )</span><br><span class="line">    <span class="comment">#直方图均衡化</span></span><br><span class="line">    new_img = equalization_histogram( origin_histogram, img )</span><br><span class="line">    </span><br><span class="line">    origin_grayHist = GrayHist(img)</span><br><span class="line">    equaliza_grayHist = GrayHist( new_img )</span><br><span class="line">    x = np.arange(<span class="number">256</span>)</span><br><span class="line">    <span class="comment"># 绘制灰度直方图</span></span><br><span class="line">    plt.figure( num = <span class="number">1</span> )</span><br><span class="line">    plt.subplot( <span class="number">2</span>, <span class="number">2</span>, <span class="number">1</span> )</span><br><span class="line">    plt.plot(x, origin_grayHist, <span class="string">&#x27;r&#x27;</span>, linewidth=<span class="number">2</span>, c=<span class="string">&#x27;black&#x27;</span>)</span><br><span class="line">    plt.title(<span class="string">&quot;Origin&quot;</span>)</span><br><span class="line">    plt.ylabel(<span class="string">&quot;number of pixels&quot;</span>)</span><br><span class="line">    plt.subplot( <span class="number">2</span>, <span class="number">2</span>, <span class="number">2</span> )</span><br><span class="line">    plt.plot(x, equaliza_grayHist, <span class="string">&#x27;r&#x27;</span>, linewidth=<span class="number">2</span>, c=<span class="string">&#x27;black&#x27;</span>)</span><br><span class="line">    plt.title(<span class="string">&quot;Equalization&quot;</span>)</span><br><span class="line">    plt.ylabel(<span class="string">&quot;number of pixels&quot;</span>)</span><br><span class="line">    plt.subplot( <span class="number">2</span>, <span class="number">2</span>, <span class="number">3</span> )</span><br><span class="line">    plt.imshow( img, cmap = plt.cm.gray )</span><br><span class="line">    plt.title( <span class="string">&#x27;Origin&#x27;</span> )</span><br><span class="line">    plt.subplot( <span class="number">2</span>, <span class="number">2</span>, <span class="number">4</span> )</span><br><span class="line">    plt.imshow( new_img, cmap = plt.cm.gray )</span><br><span class="line">    plt.title( <span class="string">&#x27;Equalization&#x27;</span> )</span><br><span class="line">    plt.show()</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="备用材料：累计频率带一些数学推导（前面那个解释太通俗了）"><a href="#备用材料：累计频率带一些数学推导（前面那个解释太通俗了）" class="headerlink" title="备用材料：累计频率带一些数学推导（前面那个解释太通俗了）"></a>备用材料：累计频率带一些数学推导（前面那个解释太通俗了）</h4><p>首先在直方图的修整, 有两种方法, 一种是直方图均衡化, 另外一种是直方图规定化, 用起来的话第一种方法用的比较多, 这里着重说一下第一种: 直方图均衡化.</p>
+<p>我们引入直方图, 很大程度上是可以根据直方图的形态来去判断图像的质量, 比如根据下图所示, 会很快发现一张图片是过亮还是过暗, 这篇文章会说一下直方图均衡化的原理, 至于实现, 以后有机会再说吧.</p>
+<p><img src="https://pic4.zhimg.com/v2-7e065ca5480ac1ba6771c4bbc8e1ee2f_r.jpg"></p>
+<p><strong>1. 直方图均衡化</strong></p>
+<p><strong>直方图均衡化是将原图像通过某种变换，得到一幅灰度直方图为均匀分布的新图像的方法。</strong></p>
+<p><strong>直方图均衡化方法的基本思想是对在图像中像素个数多的灰度级进行展宽，而对像素个数少的灰度级进行缩减。从而达到清晰图像的目的。</strong></p>
+<p><img src="https://pic2.zhimg.com/v2-7f5784a0e647f8ad6fce1421fe7e9551_r.jpg"></p>
+<p>一些理论的东西我们不谈, 直接用一个例子来说一下, 会更容易理解:</p>
+<p><strong>假设有一幅图像，共有 64×64 个像素，8 个灰度级，各灰度级概率分布见下表 ，试将其直方图均匀化。</strong></p>
+<p><img src="https://pic2.zhimg.com/v2-5c318dbe868c99de5accf69c2ae0bbc5_r.jpg"></p>
+<p>解题步骤:</p>
+<p>1: 确定图像的灰度级</p>
+<p>在实际情况下, 如果我们的图像是彩色, 需要将其转换为灰度图像, 其中的灰度级一般是 0-255, 这个题的灰度级只有 8 级, 需要注意下</p>
+<p>2: 计算原始直方图的概率</p>
+<p>统计每一个灰度在原始图像上的像素所占总体的比例, 记为 Pi</p>
+<p>3: 计算直方图概率的累加值 S(i)</p>
+<p><img src="https://pic1.zhimg.com/v2-ba26062190be3f32c4bf910ba1dd0518_r.jpg"></p>
+<p>直到最后一个灰度级, 总和为 1</p>
+<p>4: 根据公式求取像素映射关系.</p>
+<p><img src="https://pic3.zhimg.com/v2-6db222a56698d5803acd9aee5fea4ff2_b.jpg"></p>
+<p>这里的 pix 是指的灰度级, 也就是 (最大灰度级 - 最小灰度级)* 累加概率 + 0.5 后取整数</p>
+<p>5: 灰度映射</p>
+<p><img src="https://pic2.zhimg.com/v2-ea00bed1d808ed1777c787d7a9233e75_r.jpg"></p>
+<p>找到了原图像和均衡化图像灰度的对应关系，对原图进行操作，将每个像素映射成新的像素</p>
+<p>此时图像均衡化已经完成，当然你也可以再次统计灰度概率，观察一下结果。</p>
+<p><img src="https://pic4.zhimg.com/v2-2dbe5e3edd5b9a1f72c410906adecc7b_r.jpg"></p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="http://example.com">ZarroBoogs</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://example.com/2022/06/16/%E7%AC%AC%E4%B8%89%E6%AC%A1/">http://example.com/2022/06/16/%E7%AC%AC%E4%B8%89%E6%AC%A1/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://example.com" target="_blank">CodeRush</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"></div><div class="post_share"><div class="social-share" data-image="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/gh/overtrue/share.js@master/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="next-post pull-full"><a href="/2022/06/16/%E7%AC%AC%E4%BA%94%E6%AC%A1/"><img class="next-cover" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info"></div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">ZarroBoogs</div><div class="author-info__description">前端博客</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">5</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">0</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9D%A5%E8%87%AA%E8%A5%BF%E5%8D%97%E6%9E%97%E4%B8%9A%E5%A4%A7%E5%AD%A6%E7%9A%84%E8%80%81%E5%B8%88%E7%9A%84%E8%83%8E%E6%95%99%E7%BA%A7%E6%95%99%E7%A8%8B%EF%BC%8C%E5%AF%B9%E5%90%8D%E8%AF%8D%E9%83%BD%E6%AF%AB%E6%97%A0%E6%A6%82%E5%BF%B5%E7%9A%84%E8%AF%9D%EF%BC%8C%E5%BB%BA%E8%AE%AE%E5%85%88%E7%9C%8B%E4%B8%80%E7%9C%8B"><span class="toc-number">1.</span> <span class="toc-text">来自西南林业大学的老师的胎教级教程，对名词都毫无概念的话，建议先看一看</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9B%BE%E5%83%8F%E5%BD%92%E4%B8%80%E5%8C%96%E5%A4%84%E7%90%86"><span class="toc-number">2.</span> <span class="toc-text">图像归一化处理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%9B%B4%E6%96%B9%E5%9B%BE%E5%9D%87%E8%A1%A1%E5%8C%96"><span class="toc-number">3.</span> <span class="toc-text">直方图均衡化</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%9D%87%E8%A1%A1%E5%8C%96%E7%9A%84%E6%95%B0%E5%AD%A6%E5%8E%9F%E7%90%86%E5%92%8C%E7%90%86%E8%A7%A3"><span class="toc-number">3.1.</span> <span class="toc-text">均衡化的数学原理和理解</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#summary"><span class="toc-number">3.1.0.1.</span> <span class="toc-text">summary:</span></a></li></ol></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E7%9B%B4%E6%96%B9%E5%9B%BE"><span class="toc-number">3.1.1.</span> <span class="toc-text">一、直方图</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E9%A2%91%E7%8E%87%E4%B8%8E%E7%B4%AF%E7%A7%AF%E9%A2%91%E7%8E%87"><span class="toc-number">3.1.2.</span> <span class="toc-text">二、频率与累积频率</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E4%B8%89%E3%80%81%E5%9B%BE%E5%83%8F%E7%9A%84%E7%9B%B4%E6%96%B9%E5%9B%BE%E5%9D%87%E8%A1%A1%E5%8C%96"><span class="toc-number">3.1.3.</span> <span class="toc-text">三、图像的直方图均衡化</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%9B%9B%E3%80%81%E5%A4%9A%E9%80%9A%E9%81%93%E5%9B%BE%E5%83%8F%E7%9A%84%E7%9B%B4%E6%96%B9%E5%9B%BE%E5%9D%87%E8%A1%A1%E5%8C%96"><span class="toc-number">3.1.4.</span> <span class="toc-text">四、多通道图像的直方图均衡化</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#%E9%99%84%E5%BD%95-python-opencv-%E7%9A%84%E7%9B%B4%E6%96%B9%E5%9B%BE%E5%9D%87%E8%A1%A1%E5%8C%96%E4%BB%A3%E7%A0%81"><span class="toc-number">3.1.4.1.</span> <span class="toc-text">附录 python-opencv 的直方图均衡化代码</span></a></li></ol></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%89%8B%E5%8A%A8%E5%AE%9E%E7%8E%B0%E5%9D%87%E8%A1%A1%E5%8C%96"><span class="toc-number">3.2.</span> <span class="toc-text">手动实现均衡化</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%A4%87%E7%94%A8%E6%9D%90%E6%96%99%EF%BC%9A%E7%B4%AF%E8%AE%A1%E9%A2%91%E7%8E%87%E5%B8%A6%E4%B8%80%E4%BA%9B%E6%95%B0%E5%AD%A6%E6%8E%A8%E5%AF%BC%EF%BC%88%E5%89%8D%E9%9D%A2%E9%82%A3%E4%B8%AA%E8%A7%A3%E9%87%8A%E5%A4%AA%E9%80%9A%E4%BF%97%E4%BA%86%EF%BC%89"><span class="toc-number">3.3.</span> <span class="toc-text">备用材料：累计频率带一些数学推导（前面那个解释太通俗了）</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2022/06/16/%E7%AC%AC%E4%B8%89%E6%AC%A1/" title="无题"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="无题"/></a><div class="content"><a class="title" href="/2022/06/16/%E7%AC%AC%E4%B8%89%E6%AC%A1/" title="无题">无题</a><time datetime="2022-06-16T08:30:55.122Z" title="发表于 2022-06-16 16:30:55">2022-06-16</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/06/16/%E7%AC%AC%E4%BA%94%E6%AC%A1/" title="无题"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="无题"/></a><div class="content"><a class="title" href="/2022/06/16/%E7%AC%AC%E4%BA%94%E6%AC%A1/" title="无题">无题</a><time datetime="2022-06-16T08:30:55.108Z" title="发表于 2022-06-16 16:30:55">2022-06-16</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/06/16/%E7%AC%AC%E5%9B%9B%E6%AC%A1/" title="无题"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="无题"/></a><div class="content"><a class="title" href="/2022/06/16/%E7%AC%AC%E5%9B%9B%E6%AC%A1/" title="无题">无题</a><time datetime="2022-06-16T08:30:55.103Z" title="发表于 2022-06-16 16:30:55">2022-06-16</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/06/16/%E7%AC%AC%E4%BA%8C%E6%AC%A1/" title="无题"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="无题"/></a><div class="content"><a class="title" href="/2022/06/16/%E7%AC%AC%E4%BA%8C%E6%AC%A1/" title="无题">无题</a><time datetime="2022-06-16T04:58:52.712Z" title="发表于 2022-06-16 12:58:52">2022-06-16</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/05/27/hello-world/" title="Hello World"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Hello World"/></a><div class="content"><a class="title" href="/2022/05/27/hello-world/" title="Hello World">Hello World</a><time datetime="2022-05-26T16:06:47.624Z" title="发表于 2022-05-27 00:06:47">2022-05-27</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2022 By ZarroBoogs</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.js"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
